@@ -140,7 +140,7 @@ function selectProvider(name) {
         <span class="tool-name">${t.label}</span>
         ${t.disabled ? `<span class="tool-unimplemented">not implemented</span>` : ""}
       </label>
-      <span class="tool-note ${t.cls}">${t.note}</span>
+      <span class="tool-dot ${t.cls}" title="${t.note}"></span>
     </div>`).join("");
 
   document.getElementById("mcp-note").textContent = cfg.mcpNote;

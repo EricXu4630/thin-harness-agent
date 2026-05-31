@@ -189,26 +189,38 @@
       <div class="welcome-block">
         <div class="welcome-title">LLM Explorer</div>
         <div class="welcome-sub">Multi-provider agent harness. Thin wrapper, native APIs. Inspector shows every raw payload.</div>
-        <div class="welcome-grid">
-          <div class="welcome-card">
-            <div class="wc-icon">📁</div>
-            <div class="wc-title">AGENTS.md</div>
-            <div class="wc-text">Instructions loaded from AGENTS.md. Memory written to memories/AGENTS.md on this machine.</div>
+        <div class="welcome-steps">
+          <div class="welcome-step">
+            <span class="ws-num">1</span>
+            <div class="ws-body">
+              <div class="ws-title">Choose provider &amp; model</div>
+              <div class="ws-desc">Select Anthropic, OpenAI, or Gemini. Paste your API key — stored in localStorage only.</div>
+              <div class="ws-tags"><span class="ws-tag g">Anthropic</span><span class="ws-tag g">OpenAI</span><span class="ws-tag g">Gemini</span></div>
+            </div>
           </div>
-          <div class="welcome-card">
-            <div class="wc-icon">🔌</div>
-            <div class="wc-title">MCP Servers</div>
-            <div class="wc-text">Native API for Anthropic &amp; OpenAI. Free public server: mcp.deepwiki.com/mcp</div>
+          <div class="welcome-step">
+            <span class="ws-num">2</span>
+            <div class="ws-body">
+              <div class="ws-title">Enable tools</div>
+              <div class="ws-desc">Green = provider executes (web search, code, images). Yellow = harness executes locally (memory, bash).</div>
+              <div class="ws-tags"><span class="ws-tag g">API</span><span class="ws-tag y">harness</span></div>
+            </div>
           </div>
-          <div class="welcome-card">
-            <div class="wc-icon">🧠</div>
-            <div class="wc-title">Skills</div>
-            <div class="wc-text">Load SKILL.md from any GitHub URL. Anthropic uses native Skills API with progressive disclosure.</div>
+          <div class="welcome-step">
+            <span class="ws-num">3</span>
+            <div class="ws-body">
+              <div class="ws-title">Add MCP servers &amp; Skills</div>
+              <div class="ws-desc">Quick-add GitHub, Figma, Vercel, Supabase. Load any SKILL.md from a GitHub URL.</div>
+              <div class="ws-tags"><span class="ws-tag">mcp.deepwiki.com/mcp</span><span class="ws-tag">skillsmp.com</span></div>
+            </div>
           </div>
-          <div class="welcome-card">
-            <div class="wc-icon">🔍</div>
-            <div class="wc-title">Inspector</div>
-            <div class="wc-text">Every raw API request and response shown in the right panel. See exactly what's sent.</div>
+          <div class="welcome-step">
+            <span class="ws-num">4</span>
+            <div class="ws-body">
+              <div class="ws-title">Inspect every call</div>
+              <div class="ws-desc">The right panel shows every raw API request and response. The flow strip tracks each tool step in real time.</div>
+              <div class="ws-tags"><span class="ws-tag">request</span><span class="ws-tag">response</span><span class="ws-tag">flow</span></div>
+            </div>
           </div>
         </div>
       </div>
