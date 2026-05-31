@@ -13,6 +13,37 @@ The harness delegates everything possible to the provider APIs: web search, code
 
 ---
 
+## Example: orchestration in action
+
+**Setup:** Anthropic / claude-sonnet-4-6, with:
+- MCP: GitHub (`https://api.githubcopilot.com/mcp/`) — one-click add in the MCP panel
+- Skill: [brainstorming](https://raw.githubusercontent.com/obra/superpowers/main/brainstorming.md) — loaded from skillsmp.com
+- Tools: ✅ Web Search  ✅ Memory  ✅ Bash Tool
+
+**Prompt:** *"Find open issues in the thin-harness-agent repo, brainstorm solutions, and save a plan."*
+
+The flow strip above the response builds up in real-time as tools fire:
+
+```
+① 🔌 github:list_issues  →  ② 🧠 brainstorming skill (L2 load)  →  ③ 🔍 web_search  →  ④ 🖥️ bash: write plan.md  →  ⑤ 🧠 memory: write
+```
+
+**What ran where:**
+
+| Step | Tool | Ran on |
+|---|---|---|
+| ① | `github:list_issues` | GitHub's servers (Anthropic called MCP natively) |
+| ② | Brainstorming skill triggers | Anthropic's servers (full SKILL.md loaded once at L2) |
+| ③ | Web search | Anthropic's servers |
+| ④ | `bash: cat > workspace/plan.md` | **Your machine** — harness ran it |
+| ⑤ | `memory: write /memories/notes.md` | **Your machine** — harness wrote to disk |
+
+The harness executed exactly two things (steps ④ and ⑤). Everything else was the provider or MCP server.
+
+**Other quick-add MCPs in the sidebar:** Figma (`mcp.figma.com/mcp`), Vercel (`mcp.vercel.com`), Supabase (`mcp.supabase.com/mcp`), DeepWiki (free, no auth).
+
+---
+
 ## Why this exists
 
 Garry Tan's article defines the anti-pattern as a bloated harness with rigid tool definitions consuming context window. The right architecture is the inverse: fat skills encode domain knowledge and judgment; the harness stays thin enough to read in one sitting.

@@ -334,6 +334,38 @@ body{display:flex;flex-direction:column}
 .msg.user .msg-bubble{background:var(--panel);border-color:var(--border2)}
 .msg.assistant .msg-bubble{background:transparent;border-color:transparent}
 
+/* ── Flow Strip ─────────────────────────────────── */
+.flow-strip{
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px;
+  padding:7px 10px;margin-bottom:4px;
+  background:rgba(124,106,247,.05);border:1px solid rgba(124,106,247,.18);
+  border-radius:var(--r);font-size:10px;
+}
+.flow-step{
+  display:flex;align-items:center;gap:4px;
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:3px;padding:2px 6px;
+}
+.flow-num{
+  font-size:8px;font-weight:700;color:var(--accent);
+  background:rgba(124,106,247,.15);border-radius:2px;
+  padding:0 4px;min-width:14px;text-align:center;
+}
+.flow-icon{font-size:11px}
+.flow-label{color:var(--text-dim);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.flow-arrow{color:var(--border2);font-size:10px;padding:0 2px}
+
+/* ── MCP Presets ─────────────────────────────────── */
+.mcp-presets{margin-bottom:6px}
+.presets-label{font-size:8px;color:var(--text-dim);letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
+.preset-btns{display:flex;flex-wrap:wrap;gap:4px}
+.preset-btn{
+  font-family:var(--mono);font-size:10px;padding:3px 8px;
+  background:var(--panel);border:1px solid var(--border2);color:var(--text-dim);
+  border-radius:var(--r);cursor:pointer;transition:all .1s;
+}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+
 /* ── Tool Cards ──────────────────────────────────── */
 .tool-card{
   border:1px solid var(--border);border-radius:var(--r);

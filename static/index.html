@@ -54,11 +54,21 @@
       <section class="panel">
         <div class="panel-label">MCP SERVERS</div>
         <div id="mcp-list" class="item-list"></div>
+        <div class="mcp-presets">
+          <div class="presets-label">Quick add</div>
+          <div class="preset-btns">
+            <button class="preset-btn" onclick="addMcpPreset('github')">GitHub</button>
+            <button class="preset-btn" onclick="addMcpPreset('figma')">Figma</button>
+            <button class="preset-btn" onclick="addMcpPreset('vercel')">Vercel</button>
+            <button class="preset-btn" onclick="addMcpPreset('supabase')">Supabase</button>
+            <button class="preset-btn" onclick="addMcpPreset('deepwiki')">DeepWiki</button>
+          </div>
+        </div>
         <div class="add-form">
           <input id="mcp-url" class="mini-input" placeholder="https://mcp.server.com/mcp"/>
           <input id="mcp-name" class="mini-input" placeholder="Name"/>
           <input id="mcp-token" class="mini-input" placeholder="Auth token (optional)"/>
-          <button class="add-btn" onclick="addMcp()">+ Add Server</button>
+          <button class="add-btn" onclick="addMcp()">+ Add Custom</button>
         </div>
         <div id="mcp-note" class="provider-note"></div>
       </section>

@@ -18,6 +18,9 @@ const state = {
   streamText: "",
   inspCount: 0,
   apiKeys: JSON.parse(localStorage.getItem("llm_explorer_api_keys") || "{}"),
+  // Flow strip tracking for current turn
+  turnFlowEl: null,   // the .flow-strip DOM element for this turn
+  turnFlowSteps: [],  // [{tool, icon}]
 };
 
 // ─── Provider Config ─────────────────────────────────
@@ -188,6 +191,27 @@ function updateChatHeader() {
 }
 
 // ─── MCP ────────────────────────────────────────────
+const MCP_PRESETS = {
+  github:   { url: "https://api.githubcopilot.com/mcp/", name: "GitHub",   note: "Needs GITHUB_PERSONAL_ACCESS_TOKEN as auth token" },
+  figma:    { url: "https://mcp.figma.com/mcp",          name: "Figma",    note: "Needs Figma personal access token" },
+  vercel:   { url: "https://mcp.vercel.com",             name: "Vercel",   note: "Uses OAuth — authorize on first connect" },
+  supabase: { url: "https://mcp.supabase.com/mcp",       name: "Supabase", note: "Needs Supabase personal access token" },
+  deepwiki: { url: "https://mcp.deepwiki.com/mcp",       name: "DeepWiki", note: "Free, no auth — queries public GitHub repos" },
+};
+
+function addMcpPreset(key) {
+  const preset = MCP_PRESETS[key];
+  if (!preset) return;
+  if (state.mcpServers.find(m => m.url === preset.url)) {
+    appendInfo(`${preset.name} MCP already added.`);
+    return;
+  }
+  state.mcpServers.push({ url: preset.url, name: preset.name, token: "" });
+  renderMcpList();
+  updateChatHeader();
+  appendInfo(`Added ${preset.name} MCP → ${preset.url}${preset.note ? " · " + preset.note : ""}`);
+}
+
 function addMcp() {
   const url = document.getElementById("mcp-url").value.trim();
   if (!url) return;
@@ -373,6 +397,8 @@ function sendMessage() {
 
   state.streamText = "";
   state.streamEl = null;  // Created lazily on first token — so tool calls appear above it
+  state.turnFlowEl = null;
+  state.turnFlowSteps = [];
 
   scrollBottom(true);  // Scroll to show the user's message
 
@@ -422,6 +448,7 @@ function handleEvent(evt) {
       // Tool call with early detection (input may be empty {}; final input comes via "tool" event)
       appendToolEvent("call", evt.tool, evt.input);
       addInspEntry("tool", { tool: evt.tool, input: evt.input }, `Tool: ${evt.tool}`);
+      updateFlowStrip(evt.tool, evt.input);
       scrollBottom();
       break;
     case "tool":
@@ -611,6 +638,32 @@ function tcToggle(id) {
     const ch = row.querySelector(".tc-chevron");
     if (ch) ch.textContent = open ? "▸" : "▾";
   }
+}
+
+// ── Flow strip ────────────────────────────────────────
+// Builds a numbered timeline above the assistant bubble as tools fire.
+// Shows the orchestration sequence at a glance.
+function updateFlowStrip(toolName, input) {
+  const msgs = document.getElementById("messages");
+  const step = state.turnFlowSteps.length + 1;
+  const icon = toolIcon(toolName);
+  const preview = toolPreview(toolName, input);
+  const label = preview ? `${toolName}: ${preview.slice(0, 40)}` : toolName;
+  state.turnFlowSteps.push({ toolName, icon, label, step });
+
+  if (!state.turnFlowEl) {
+    state.turnFlowEl = document.createElement("div");
+    state.turnFlowEl.className = "flow-strip";
+    msgs.appendChild(state.turnFlowEl);
+  }
+
+  state.turnFlowEl.innerHTML = state.turnFlowSteps.map((s, i) =>
+    `<span class="flow-step">
+      <span class="flow-num">${s.step}</span>
+      <span class="flow-icon">${s.icon}</span>
+      <span class="flow-label">${esc(s.label)}</span>
+    </span>${i < state.turnFlowSteps.length - 1 ? '<span class="flow-arrow">→</span>' : ''}`
+  ).join("");
 }
 
 function appendInfo(msg) {
