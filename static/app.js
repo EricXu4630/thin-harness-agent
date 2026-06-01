@@ -492,7 +492,19 @@ function handleEvent(evt) {
         const bubble = state.streamEl.querySelector(".msg-bubble");
         const cur = bubble.querySelector(".cursor");
         if (cur) bubble.removeChild(cur);
-        bubble.textContent = final;
+        // If bubble already contains an <img> (from the "image" event), don't overwrite it
+        // with textContent — that would nuke the DOM node and show raw HTML as text instead.
+        if (bubble.querySelector("img")) {
+          const text = (final || "").replace(/\(image generated[^)]*\)/gi, "").trim();
+          if (text) {
+            const p = document.createElement("div");
+            p.style.marginTop = "8px";
+            p.textContent = text;
+            bubble.appendChild(p);
+          }
+        } else {
+          bubble.textContent = final;
+        }
         state.streamEl = null;
       }
       state.conversation.push({ role: "assistant", content: final });
