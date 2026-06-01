@@ -140,7 +140,7 @@ function selectProvider(name) {
         <span class="tool-name">${t.label}</span>
         ${t.disabled ? `<span class="tool-unimplemented">not implemented</span>` : ""}
       </label>
-      <span class="tool-dot ${t.cls}" title="${t.note}"></span>
+      <span class="tool-tag ${t.cls}" title="${t.note}">${t.cls === 'native' ? 'API' : 'local'}</span>
     </div>`).join("");
 
   document.getElementById("mcp-note").textContent = cfg.mcpNote;
@@ -710,6 +710,7 @@ function addInspEntry(kind, payload, label) {
   const block = document.createElement("div");
   block.className = "insp-block";
   block.id = id;
+  block.dataset.kind = kind;
 
   let summary = "";
   if (kind === "request")  summary = buildRequestSummary(payload);
